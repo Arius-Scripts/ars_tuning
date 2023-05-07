@@ -769,7 +769,7 @@ local function platesColorMenu()
         end,
         options = {
             {
-                title = plate("plate_blue_on_white1"),
+                title = locale("plate_blue_on_white1"),
                 icon = mods.plateIndex.icon,
                 iconColor = getVehicleColor(),
                 onSelect = function()
