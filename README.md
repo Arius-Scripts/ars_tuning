@@ -23,5 +23,6 @@
 > 
 
 **To do in the future**
-> *Camera movement
-> Payment system (hard with context menu)*
+> *Camera movement*
+>
+> *Payment system (hard with context menu)*
