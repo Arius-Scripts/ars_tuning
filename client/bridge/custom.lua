@@ -1,7 +1,7 @@
-function hasAccess(job)
-    if not job then return true end
+-- function hasAccess(job)
+--     if not job then return true end
 
-    --- add 
+--     --- add 
     
-    return false
-end
+--     return false
+-- end

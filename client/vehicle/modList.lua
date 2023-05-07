@@ -207,59 +207,59 @@ local mods = {
 	},
     modTrimA = {
 		modNum = 27,
-		label = "Trim",
+		label = "Interior",
 		parent = 'cosmeticsMenu',
-        title = "Trim",
-        icon = "credit-card"
+        title = "Interior",
+        icon = "couch"
 	},
     modOrnaments = {
 		modNum = 28,
-		label = "Ornaments",
+		label = "Trim",
 		parent = 'cosmeticsMenu',
-        title = "Ornament",
-        icon = "credit-card"
+        title = "Trim",
+        icon = "t"
 	},
     modDashboard = {
 		modNum = 29,
 		label = "Dashboard",
 		parent = 'cosmeticsMenu',
         title = "Dashboard",
-        icon = "credit-card"
+        icon = "car"
 	},
     modDial = {
 		modNum = 30,
-		label = "Dial",
+		label = "Speedometer",
 		parent = 'cosmeticsMenu',
-        title = "Dial",
-        icon = "credit-card"
+        title = "Speedometer",
+        icon = "gauge"
 	},
     modDoorSpeaker = {
 		modNum = 31,
 		label = "Door Speaker",
 		parent = 'cosmeticsMenu',
         title = "Door Speaker",
-        icon = "credit-card"
+        icon = "door-open"
 	},
     modSeats = {
 		modNum = 32,
 		label = "Seats",
 		parent = 'cosmeticsMenu',
         title = "Seat",
-        icon = "credit-card"
+        icon = "chair"
 	},
     modSteeringWheel = {
 		modNum = 33,
 		label = "Steering wheel",
 		parent = 'cosmeticsMenu',
         title = "Steering wheel",
-        icon = "credit-card"
+        icon = "dharmachakra"
 	},
     modShifterLeavers = {
 		modNum = 34,
 		label = "Shifter Leavers",
 		parent = 'cosmeticsMenu',
         title = "Shifter leavers",
-        icon = "credit-card"
+        icon = "gear"
 	},
     modAPlate = {
 		modNum = 35,
@@ -273,84 +273,84 @@ local mods = {
 		label = "Speakers",
 		parent = 'cosmeticsMenu',
         title = "Speakers",
-        icon = "credit-card"
+        icon = "headphones"
 	},
     modTrunk = {
 		modNum = 37,
 		label = "Trunk",
 		parent = 'cosmeticsMenu',
         title = "Trunk",
-        icon = "credit-card"
+        icon = "car-rear"
 	},
     modHydrolic = {
 		modNum = 38,
 		label = "Hydrolic",
 		parent = 'cosmeticsMenu',
         title = "Hydrolic",
-        icon = "credit-card"
+        icon = "h"
 	},
     modEngineBlock = {
 		modNum = 39,
 		label = "Engine block",
 		parent = 'cosmeticsMenu',
         title = "Engine block",
-        icon = "credit-card"
+        icon = "battery-empty"
 	},
     modAirFilter = {
 		modNum = 40,
 		label = "Air filter",
 		parent = 'cosmeticsMenu',
         title = "Air filter",
-        icon = "credit-card"
+        icon = "filter"
 	},
     modStruts = {
 		modNum = 41,
 		label = "Struts",
 		parent = 'cosmeticsMenu',
         title = "Struts",
-        icon = "credit-card"
+        icon = "gear"
 	},
     modArchCover = {
 		modNum = 42,
 		label = "Arch Cover",
 		parent = 'cosmeticsMenu',
         title = "Arch Cover",
-        icon = "credit-card"
+        icon = "bezier-curve"
 	},
     modAerials = {
 		modNum = 43,
 		label = "Aerials",
 		parent = 'cosmeticsMenu',
         title = "Aerials",
-        icon = "credit-card"
+        icon = "signal"
 	},
     modTrimB = {
 		modNum = 44,
-		label = "TrimB",
+		label = "Wings",
 		parent = 'cosmeticsMenu',
-        title = "TrimB",
-        icon = "credit-card"
+        title = "Wings",
+        icon = "cloud"
 	},
     modTank = {
 		modNum = 45,
 		label = "Tank",
 		parent = 'cosmeticsMenu',
         title = "Tank",
-        icon = "credit-card"
+        icon = "gas-pump"
 	},
     modWindows = {
 		modNum = 46,
 		label = "Windows",
 		parent = 'cosmeticsMenu',
         title = "Windows",
-        icon = "credit-card"
+        icon = "window-maximize"
 	},
     modLivery = {
 		modNum = 48,
 		label = "Livery",
 		parent = 'cosmeticsMenu',
         title = "Livery",
-        icon = "credit-card"
+        icon = "spray-can-sparkles"
 	},
 
     plateIndex = {

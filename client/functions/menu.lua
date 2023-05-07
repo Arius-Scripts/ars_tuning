@@ -1231,7 +1231,7 @@ local function openEstethicsMenu()
             },
             {
                 title = locale("body_parts_title"),
-                icon = 'lightbulb',
+                icon = 'wrench',
                 iconColor = getVehicleColor(),
                 onSelect = function()
                     bodyPartsMenu()
