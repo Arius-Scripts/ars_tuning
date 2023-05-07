@@ -4,11 +4,11 @@
 
 
 **Frameworks supported:**
-> *esx
+> *esx*
 >
-> qb-core 
+> *qb-core* 
 >
-> and ox_core*
+> *ox_core*
 
 **Dependencies:**
 > *ox_lib*
