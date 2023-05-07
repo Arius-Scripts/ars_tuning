@@ -925,7 +925,7 @@ local function wheelColors()
     lib.registerContext({
         id = 'wheelColorCategory',
         title = locale("wheel_color_title"),
-        menu = "cosmeticsMenu",
+        menu = "wheelsMenu",
         onExit = function ()
             lib.hideTextUI()
             
@@ -1101,11 +1101,11 @@ local function openWheelsMenu()
                 icon = "cloud",
                 iconColor = getVehicleColor(),
                 onSelect = function ()
-                    local input = lib.inputDialog('Select Color', {
-                        {type = 'color', label = 'Colour input', format = "rgb"},
+                    local input = lib.inputDialog(locale("select_color"), {
+                        {type = 'color', label = locale("color_input"), format = "rgb"},
                     })
 
-                    if not input then openColorMenu() return end
+                    if not input then return end
 
                     local color = input[1] or "rgb(255,255,255)"
 
