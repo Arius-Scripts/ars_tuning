@@ -28,3 +28,6 @@
 > *Camera movement*
 >
 > *Payment system (hard with context menu)*
+
+Preview
+https://www.youtube.com/watch?v=FNEg1aXmd-0&feature=youtu.be&ab_channel=AriusDevelopment
