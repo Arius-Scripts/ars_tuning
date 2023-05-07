@@ -7,17 +7,17 @@ points.workshops = {}
 for i = 1, #Config.WorkShops do
     local cfg = Config.WorkShops[i]
 
-    if cfg.blip then
+    if cfg.blip.enable then
         local blip = AddBlipForCoord(cfg.pos)
 
-        SetBlipSprite (blip, 566)
+        SetBlipSprite (blip, cfg.blip.type)
         SetBlipDisplay(blip, 6)
-        SetBlipScale  (blip, 0.8)
-        SetBlipColour (blip, 5)
+        SetBlipScale  (blip, cfg.blip.scale)
+        SetBlipColour (blip, cfg.blip.color)
         SetBlipAsShortRange(blip, true)
 
         BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString("Tunning")
+        AddTextComponentString(cfg.blip.name)
         EndTextCommandSetBlipName(blip)
     end
 

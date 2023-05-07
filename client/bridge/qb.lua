@@ -4,7 +4,7 @@ if not qb then return end
 local QBCore = exports['qb-core']:GetCoreObject()
 
 function hasAccess(job)
-    if not job then return end
+    if not job then return true end
 
     local playerData = QBCore.Functions.GetPlayerData()
 

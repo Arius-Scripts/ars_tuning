@@ -9,7 +9,7 @@ local chunk = assert(load(import, ('@@ox_core/%s'):format(file)))
 chunk()
 
 function hasAccess(job)
-    if not job then return end
+    if not job then return true end
 
     for k,v in pairs(player.groups) do
         if k == job then return true end

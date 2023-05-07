@@ -18,6 +18,9 @@
 
     "disable_xenon": "Disable",
     "xenon_title": "Xenon Lights",
+
+    "disable_neon": "Disable",
+    "color_neon": "Color",
     
     "color_title": "Colors",
     "primary_color_title": "Primary Color",

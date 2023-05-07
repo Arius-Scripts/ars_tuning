@@ -1138,6 +1138,62 @@ local function openWheelsMenu()
 end
 
 
+local function openNeonMenu()
+    local vehicle = cache.vehicle
+    local disabled = getVehicleProperties(vehicle).neonEnabled
+
+    if not disabled[1] then disabled = true else disabled = false end
+
+    lib.registerContext({
+        id = 'neonMenu',
+        title = locale("neon_title"),
+        menu = "cosmeticsMenu",
+        onExit = function ()
+            lib.hideTextUI()
+            
+        end,
+        options = {
+            {
+                title = locale("disable_neon"),
+                disabled = disabled,
+                onSelect = function ()
+                    lib.setVehicleProperties(vehicle, {neonEnabled = {false,false,false,false}})
+                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
+                    openNeonMenu()
+                end
+            },
+            {
+                title = locale("color_neon"),
+                onSelect = function ()
+                    local input = lib.inputDialog(locale("select_color"), {
+                        {type = 'color', label = locale("color_input"), format = "rgb"},
+                    })
+                
+                    if not input then openColorMenu() return end
+                
+                    local color = input[1] or "rgb(255,255,255)"
+                
+                    local vehicle = cache.vehicle
+                
+                    local r, g, b = string.match(color, "rgb%((%d+), (%d+), (%d+)%)")
+                    r = tonumber(r)
+                    g = tonumber(g)
+                    b = tonumber(b)
+                
+                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
+                
+                    lib.setVehicleProperties(vehicle, {neonEnabled = {true,true,true,true}})
+                    lib.setVehicleProperties(vehicle, {neonColor = {r,g,b}})
+                    openNeonMenu()
+                end
+            },
+        }
+    })
+
+    lib.showContext("neonMenu")
+
+end
+
 local function openEstethicsMenu()
     lib.registerContext({
         id = 'cosmeticsMenu',
@@ -1170,26 +1226,7 @@ local function openEstethicsMenu()
                 icon = 'lightbulb',
                 iconColor = getVehicleColor(),
                 onSelect = function()
-                    local input = lib.inputDialog(locale("select_color"), {
-                        {type = 'color', label = locale("color_input"), format = "rgb"},
-                    })
-
-                    if not input then openColorMenu() return end
-
-                    local color = input[1] or "rgb(255,255,255)"
-
-                    local vehicle = cache.vehicle
-
-                    local r, g, b = string.match(color, "rgb%((%d+), (%d+), (%d+)%)")
-                    r = tonumber(r)
-                    g = tonumber(g)
-                    b = tonumber(b)
-
-                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
-
-                    lib.setVehicleProperties(vehicle, {neonEnabled = {true,true,true,true}})
-                    lib.setVehicleProperties(vehicle, {neonColor = {r,g,b}})
-                    openEstethicsMenu()
+                    openNeonMenu()
                 end,
             },
             {

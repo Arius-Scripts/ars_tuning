@@ -4,7 +4,7 @@ if not esx then return end
 local ESX = exports.es_extended:getSharedObject()
 
 function hasAccess(job)
-    if not job then return end
+    if not job then return true end
 
     local playerData = ESX.GetPlayerData()
 

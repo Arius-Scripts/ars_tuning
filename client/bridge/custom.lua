@@ -1,5 +1,5 @@
 function hasAccess(job)
-    if not job then return end
+    if not job then return true end
 
     --- add 
     
