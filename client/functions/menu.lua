@@ -1105,7 +1105,7 @@ local function openWheelsMenu()
                         {type = 'color', label = locale("color_input"), format = "rgb"},
                     })
 
-                    if not input then return end
+                    if not input then openWheelsMenu() return end
 
                     local color = input[1] or "rgb(255,255,255)"
 
