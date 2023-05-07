@@ -5,7 +5,9 @@
 
 **Frameworks supported:**
 > *esx
+>
 > qb-core 
+>
 > and ox_core*
 
 **Dependencies:**
