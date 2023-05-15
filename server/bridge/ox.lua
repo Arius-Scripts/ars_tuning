@@ -9,6 +9,23 @@ lib.callback.register('ars_tuning:hasMoney', function(source, amount)
 end)
 
 --- @param amount number
-RegisterNetEvent("ars_tuning:payMods", function(amount)
+RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
     exports.ox_inventory:RemoveItem(source, "money", amount)
+
+    local properties = properties
+    local isVehicleOwned = MySQL.prepare.await('SELECT * FROM vehicles WHERE plate = ?', { properties.plate })
+
+    if isVehicleOwned then
+        local data = json.decode(isVehicleOwned.data)
+        data.properties = properties
+
+        local newData = json.encode(data)
+
+        MySQL.update('UPDATE vehicles SET data = ? WHERE plate = ?', { newData, properties.plate },
+            function(affectedRows)
+                if affectedRows then
+                    print(affectedRows)
+                end
+            end)
+    end
 end)

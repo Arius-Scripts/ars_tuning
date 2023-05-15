@@ -22,7 +22,7 @@ function confirmPayment()
 
         cart = {}
         lib.setVehicleProperties(cache.vehicle, currentVehProperties.new)
-        TriggerServerEvent("ars_tuning:payMods", cost)
+        TriggerServerEvent("ars_tuning:payMods", cost, currentVehProperties.new)
         return
     end
 
