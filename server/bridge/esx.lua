@@ -13,8 +13,17 @@ lib.callback.register('ars_tuning:hasMoney', function(source, amount)
 end)
 
 --- @param amount number
-RegisterNetEvent("ars_tuning:payMods", function(amount)
+RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
     local xPlayer = ESX.GetPlayerFromId(source)
 
     xPlayer.removeAccountMoney("money", amount)
+
+
+    local properties = properties
+    local isVehicleOwned = MySQL.prepare.await('SELECT plate FROM owned_vehicles WHERE plate = ?', { properties.plate })
+
+    if isVehicleOwned then
+        MySQL.update('UPDATE owned_vehicles SET vehicle = ? WHERE plate = ?',
+            { json.encode(properties), properties.plate })
+    end
 end)

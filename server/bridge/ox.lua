@@ -13,7 +13,7 @@ RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
     exports.ox_inventory:RemoveItem(source, "money", amount)
 
     local properties = properties
-    local isVehicleOwned = MySQL.prepare.await('SELECT * FROM vehicles WHERE plate = ?', { properties.plate })
+    local isVehicleOwned = MySQL.prepare.await('SELECT plate,data FROM vehicles WHERE plate = ?', { properties.plate })
 
     if isVehicleOwned then
         local data = json.decode(isVehicleOwned.data)
@@ -21,11 +21,6 @@ RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
 
         local newData = json.encode(data)
 
-        MySQL.update('UPDATE vehicles SET data = ? WHERE plate = ?', { newData, properties.plate },
-            function(affectedRows)
-                if affectedRows then
-                    print(affectedRows)
-                end
-            end)
+        MySQL.update('UPDATE vehicles SET data = ? WHERE plate = ?', { newData, properties.plate })
     end
 end)
