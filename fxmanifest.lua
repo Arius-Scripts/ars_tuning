@@ -14,12 +14,19 @@ client_scripts {
     "client/functions/utils.lua",
     "client/functions/payment.lua",
     "client/functions/menu.lua",
-    "client/bridge/*.lua",
+    "client/bridge/esx.lua",
+    "client/bridge/ox.lua",
+    "client/bridge/qb.lua",
+    "client/bridge/custom.lua",
     "client/client.lua"
 }
 
 server_scripts {
-    "server/*.lua"
+    "server/*.lua",
+    "server/bridge/esx.lua",
+    "server/bridge/ox.lua",
+    "server/bridge/qb.lua",
+    "server/bridge/custom.lua",
 }
 
 shared_scripts {

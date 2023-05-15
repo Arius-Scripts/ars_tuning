@@ -1,5 +1,6 @@
 local mods = require "client.vehicle.modList"
 local colors = require "client.vehicle.colorList"
+
 currentVehProperties = {}
 cart = {}
 
@@ -135,6 +136,26 @@ local function openTurboMenu()
 
                     playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
                     openTurboMenu()
+
+                    local newModData = {
+                        modLabel = locale("turbo_title"),
+                        modType = "modTurbo",
+                        modLevel = 1,
+                    }
+
+                    local foundMatch = false
+                    for i, existingModData in ipairs(cart) do
+                        if existingModData.modType == "modTurbo" then
+                            cart[i] = newModData
+                            foundMatch = true
+                            break
+                        end
+                    end
+
+                    if not foundMatch then
+                        table.insert(cart, newModData)
+                    end
+                    currentVehProperties.new = getVehicleProperties(vehicle)
                 end
             },
             {
@@ -147,6 +168,27 @@ local function openTurboMenu()
 
                     playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
                     openTurboMenu()
+
+
+                    local newModData = {
+                        modLabel = locale("turbo_title"),
+                        modType = "modTurbo",
+                        modLevel = 0,
+                    }
+
+                    local foundMatch = false
+                    for i, existingModData in ipairs(cart) do
+                        if existingModData.modType == "modTurbo" then
+                            cart[i] = newModData
+                            foundMatch = true
+                            break
+                        end
+                    end
+
+                    if not foundMatch then
+                        table.insert(cart, newModData)
+                    end
+                    currentVehProperties.new = getVehicleProperties(vehicle)
                 end
             },
         }
@@ -463,7 +505,7 @@ local function openColorMenu()
                     openColorMenu()
 
                     local newModData = {
-                        modLabel = modLabel,
+                        modLabel = locale("primary_color_title"),
                         modType = "color1",
                         color = vector3(r, g, b),
                     }
