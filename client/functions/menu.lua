@@ -1,5 +1,6 @@
 local mods = require "client.vehicle.modList"
 local colors = require "client.vehicle.colorList"
+local vehicles = require "client.vehicle.vehicles"
 
 currentVehProperties = {}
 cart = {}
@@ -21,6 +22,7 @@ local function openModsMenu(veh, mod, maxMods)
             modNum = v.modNum
             modLabel = v.label
             parentMenu = v.parent
+            modPrice = v.price
 
             if modNum == 23 then modType = "modFrontWheels" end
 
@@ -75,11 +77,39 @@ local function openModsMenu(veh, mod, maxMods)
 
                     openModsMenu(vehicle, modNum, mods)
 
+                    local vehicleModel = GetEntityModel(vehicle)
+
+                    for k, v in pairs(vehicles) do
+                        if vehicleModel == GetHashKey(k) then
+                            ownedPrice = v.price
+                            break
+                        end
+                        Wait(1)
+                    end
+                    local modPercentage
+                    ownedPrice = tonumber(ownedPrice)
+                    if type(modPrice) == "table" then
+                        for m = 1, #modPrice, 1 do
+                            if m == i then
+                                modPercentage = modPrice[i] / 100
+                                break
+                            elseif i == maxMods then
+                                modPercentage = modPrice[1] / 100
+                                break
+                            end
+                        end
+                    else
+                        print("3")
+                        modPercentage = modPrice / 100
+                    end
+                    local price = ownedPrice * modPercentage
+                    print(price)
                     local newModData = {
                         modLabel = modLabel,
                         modType = modType,
                         modNum = modNum,
                         modLevel = i,
+                        modPrice = price,
                     }
 
                     local foundMatch = false
@@ -302,13 +332,11 @@ local function openUpgradeMenu()
     lib.showContext('upgradeMenu')
 end
 
--- RegisterCommand("prop", function (source, args, raw)
---     local ve = getVehicleProperties(cache.vehicle)
---     print(json.encode(ve, {indent = true}))
---     print(ve.tyreSmokeColor[1])
---     print(ve.tyreSmokeColor[2])
---     print(ve.tyreSmokeColor[3])
--- end)
+RegisterCommand("prop", function(source, args, raw)
+    local ve = getVehicleProperties(cache.vehicle)
+    print(json.encode(ve, { indent = true }))
+    print(ve.modEngine)
+end)
 
 local function openPearlescentMenu()
     local options = {}
