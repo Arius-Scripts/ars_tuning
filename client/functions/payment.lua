@@ -1,15 +1,22 @@
 function confirmPayment()
     if not cart[1] then return end
-    print(json.encode(cart, { indent = true }))
+
+    local cost = 0
+    local modListMsg = ""
+
+    for k, v in ipairs(cart) do
+        print(json.encode(v))
+        local modPrice = tonumber(v.modPrice)
+        cost = cost + modPrice
+        modListMsg = modListMsg .. "- " .. v.modLabel .. " " .. v.modLevel .. " **" .. modPrice .. "$**  \n"
+    end
 
     local confirmation = lib.alertDialog({
         header = 'Payment confirmation',
-        content = 'Conferm the payment',
+        content = modListMsg,
         centered = false,
         cancel = true
     })
-
-    local cost = 1000
 
     if confirmation == "confirm" then
         local hasMoney = lib.callback.await('ars_tuning:hasMoney', false, cost)

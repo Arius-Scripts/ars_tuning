@@ -1,7 +1,7 @@
 local mods = {
     modEngine = {
         modNum = 11,
-        label = "Level",
+        label = "Engine Level",
         parent = "upgradeMenu",
         title = "Engine",
         icon = "gauge",
@@ -9,35 +9,35 @@ local mods = {
     },
     modBrakes = {
         modNum = 12,
-        label = "Level",
+        label = "Brakes Level",
         parent = "upgradeMenu",
         title = "Breaks",
         price = { 4.65, 9.3, 18.6, 13.95 }
     },
     modTransmission = {
         modNum = 13,
-        label = "Level",
+        label = "Transimission Level",
         parent = "upgradeMenu",
         title = "Transmission",
         price = { 13.95, 20.93, 46.51, 63.55 }
     },
     modSuspension = {
         modNum = 15,
-        label = "Level",
+        label = "Suspension Level",
         parent = "upgradeMenu",
         title = "Suspension",
         price = { 3.72, 7.44, 14.88, 29.77, 40.2 }
     },
     modArmor = {
         modNum = 16,
-        label = "Level",
+        label = "Armor Level",
         parent = "upgradeMenu",
         title = "Armor",
         price = { 69.77, 116.28, 130.00, 150.00, 180.00, 190.00 }
     },
     modTurbo = {
         modNum = 18,
-        label = "Level",
+        label = "Trubo",
         parent = "upgradeMenu",
         title = "Turbo",
         price = 55.81
@@ -405,6 +405,21 @@ local mods = {
         icon = "credit-card",
         price = 1.1
     },
+    color = {
+        icon = "droplet",
+        price = 1.2
+    },
+    windowTint = {
+        icon = "paint-roller",
+        price = 1.2
+    },
+    neon = {
+        icon = "paint-roller",
+        price = 1.2
+    },
+    wheelsColor = {
+        price = 1.2,
+    }
 }
 
 

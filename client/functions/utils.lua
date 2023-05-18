@@ -1,41 +1,42 @@
-function getVehicleProperties(veh)
-    local vehicle = veh
-    local vehicleProperties = lib.getVehicleProperties(vehicle)
+local vehicles = require "client.vehicle.vehicles"
 
-    return vehicleProperties
+function getVehicleProperties(veh)
+	local vehicle = veh
+	local vehicleProperties = lib.getVehicleProperties(vehicle)
+
+	return vehicleProperties
 end
 
 function getVehicleModCounts(veh, mod)
-    local vehicle = veh
+	local vehicle = veh
 
-    local modCounts = GetNumVehicleMods(vehicle, mod)
+	local modCounts = GetNumVehicleMods(vehicle, mod)
 
-    return modCounts
+	return modCounts
 end
-
 
 function playSound(soundName, audioName, soundId)
 	local soundId = soundId or -1
-    PlaySoundFrontend(soundId, soundName, audioName, false)
+	PlaySoundFrontend(soundId, soundName, audioName, false)
 end
 
 function getVehicleColor()
-    local r = 175
-    local g = 179
-    local b = 178
+	local r = 175
+	local g = 179
+	local b = 178
 
-    local vehicle = cache.vehicle
-    local vehColor = getVehicleProperties(vehicle).color1
+	local vehicle = cache.vehicle
+	local vehColor = getVehicleProperties(vehicle).color1
 
-    if type(vehColor) == "table" then
-        r = vehColor[1]
-        g = vehColor[2]
-        b = vehColor[3]
-    end
+	if type(vehColor) == "table" then
+		r = vehColor[1]
+		g = vehColor[2]
+		b = vehColor[3]
+	end
 
-    local bgColor = "rgba("..r..", "..g..", "..b..", 0.7)"
+	local bgColor = "rgba(" .. r .. ", " .. g .. ", " .. b .. ", 0.7)"
 
-    return bgColor
+	return bgColor
 end
 
 function toggleCam()
@@ -43,25 +44,42 @@ function toggleCam()
 end
 
 function showVehicleStats()
-    local vehicle = cache.vehicle
+	local vehicle = cache.vehicle
 
-    local vehicleModel = GetEntityModel(vehicle)
-    local acceleration = (GetVehicleModelAcceleration(vehicleModel) or 0.0) * 10
-    local maxSpeed = (GetVehicleModelEstimatedMaxSpeed(vehicleModel) or 0.0) / 10
-    local breaks = GetVehicleModelMaxBraking(vehicleModel) or 0.0
-    local power = (acceleration + maxSpeed) / 2
+	local vehicleModel = GetEntityModel(vehicle)
+	local acceleration = (GetVehicleModelAcceleration(vehicleModel) or 0.0) * 10
+	local maxSpeed = (GetVehicleModelEstimatedMaxSpeed(vehicleModel) or 0.0) / 10
+	local breaks = GetVehicleModelMaxBraking(vehicleModel) or 0.0
+	local power = (acceleration + maxSpeed) / 2
 
-    local messageToShow = 'ㅤㅤㅤㅤㅤ**STATISTICS**ㅤㅤㅤㅤㅤ  \n Power: '..math.round(power).. "  \n Acceleration: "..math.round(acceleration).."  \n Max Speed: "..math.round(maxSpeed).."  \n Breaks: "..math.round(breaks)
+	local messageToShow = 'ㅤㅤㅤㅤㅤ**STATISTICS**ㅤㅤㅤㅤㅤ  \n Power: ' ..
+		math.round(power) ..
+		"  \n Acceleration: " ..
+		math.round(acceleration) .. "  \n Max Speed: " .. math.round(maxSpeed) .. "  \n Breaks: " .. math.round(breaks)
 
-    lib.showTextUI(messageToShow, {
-        position = "right-center",
-        icon = 'car',
-        style = {
-            borderRadius = 5,
-            backgroundColor = getVehicleColor(),
-            color = "#fff",
-        }
-    })
+	lib.showTextUI(messageToShow, {
+		position = "right-center",
+		icon = 'car',
+		style = {
+			borderRadius = 5,
+			backgroundColor = getVehicleColor(),
+			color = "#fff",
+		}
+	})
+end
+
+function getVehiclePrice(vehicle)
+	local vehicleModel = GetEntityModel(vehicle)
+
+	for k, v in pairs(vehicles) do
+		if vehicleModel == GetHashKey(k) then
+			ownedPrice = v.price
+			break
+		end
+		Wait(1)
+	end
+
+	return tonumber(ownedPrice)
 end
 
 function getHornName(index)
@@ -173,5 +191,3 @@ function getHornName(index)
 		return "N/A"
 	end
 end
-
-
