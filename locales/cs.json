@@ -105,5 +105,7 @@
 	"wheel_type_offroad": "Off-Road",
 	"wheel_type_tuner": "Tuner",
 	"wheel_type_bike": "Bike",
-	"wheel_type_highend": "High-End"
+	"wheel_type_highend": "High-End",
+
+	"no_money": "dost peněz"
 }

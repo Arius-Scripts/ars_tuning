@@ -1,5 +1,4 @@
 local vehicles = require "client.vehicle.vehicles"
-
 function getVehicleProperties(veh)
 	local vehicle = veh
 	local vehicleProperties = lib.getVehicleProperties(vehicle)
@@ -18,6 +17,14 @@ end
 function playSound(soundName, audioName, soundId)
 	local soundId = soundId or -1
 	PlaySoundFrontend(soundId, soundName, audioName, false)
+end
+
+function showNotification(msg)
+	lib.notify({
+		title = 'Tuning',
+		description = msg,
+		type = 'info'
+	})
 end
 
 function getVehicleColor()

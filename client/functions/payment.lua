@@ -1,3 +1,5 @@
+lib.locale()
+
 function confirmPayment()
     if not cart[1] then return end
 
@@ -24,6 +26,8 @@ function confirmPayment()
         if not hasMoney then
             lib.setVehicleProperties(cache.vehicle, currentVehProperties.old)
             cart = {}
+
+            showNotification(locale("no_money"))
             return
         end
 
