@@ -7,7 +7,6 @@ function confirmPayment()
     local modListMsg = ""
 
     for k, v in ipairs(cart) do
-        print(json.encode(v))
         local modPrice = tonumber(v.modPrice)
         cost = cost + modPrice
         modListMsg = modListMsg .. "- " .. v.modLabel .. " " .. v.modLevel .. " **" .. modPrice .. "$**  \n"
