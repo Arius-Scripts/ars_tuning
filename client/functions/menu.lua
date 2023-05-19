@@ -2231,6 +2231,9 @@ function openTuningMenu()
     lib.hideContext()
 
     local vehicle = cache.vehicle
+    modifiyingvehicle = vehicle
+
+    FreezeEntityPosition(modifiyingvehicle, true)
 
     lib.registerContext({
         id = 'tuningMenu',
@@ -2260,16 +2263,15 @@ function openTuningMenu()
 
     -- Setting the player cam position
     local vehPos = GetEntityCoords(vehicle)
-    local camPos = GetOffsetFromEntityInWorldCoords(vehicle, -2.0, 5.0, 3.0)
+    local camPos = GetOffsetFromEntityInWorldCoords(vehicle, -4.0, 0.0, 2.5)
     local headingToObject = GetHeadingFromVector_2d(vehPos.x - camPos.x, vehPos.y - camPos.y)
 
-    camMain = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', camPos.x, camPos.y, camPos.z, -35.0, 0.0,
-        headingToObject, GetGameplayCamFov(), false, 2)
-    camSec = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', camPos.x, camPos.y, camPos.z, -35.0, 0.0,
+    cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', camPos.x, camPos.y, camPos.z, -35.0, 0.0,
         headingToObject, GetGameplayCamFov(), false, 2)
 
-    SetCamActive(camMain, true)
-    RenderScriptCams(true, true, 1000, true, true)
+
+    SetCamActive(cam, true)
+    RenderScriptCams(true, true, 600, true, true)
 
     lib.showContext('tuningMenu')
     showVehicleStats()
@@ -2279,8 +2281,7 @@ function onExit()
     lib.hideTextUI()
     confirmPayment()
 
-    RenderScriptCams(false, true, 1000, true, true)
-    DestroyCam(camMain, true)
-    DestroyCam(camSec, true)
-    ClearFocus()
+    RenderScriptCams(false, true, 600, true, true)
+    DestroyCam(cam, true)
+    FreezeEntityPosition(modifiyingvehicle, false)
 end

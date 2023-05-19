@@ -1,21 +1,5 @@
 Config = {}
 
-Config.Prices = {
-    cosmetics = 250,
-    colors = 50,
-    engine = {
-        0,
-        2000,
-        4000,
-        6000,
-    },
-    breaks = {
-        0,
-        300,
-        600
-    }
-}
-
 Config.WorkShops = {
     {
         job = "lsc", -- false if you dont want to use the job
