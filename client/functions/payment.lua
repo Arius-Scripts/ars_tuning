@@ -24,15 +24,16 @@ function confirmPayment()
 
         if not hasMoney then
             lib.setVehicleProperties(cache.vehicle, currentVehProperties.old)
+
             cart = {}
 
             showNotification(locale("no_money"))
             return
         end
 
-        cart = {}
         lib.setVehicleProperties(cache.vehicle, currentVehProperties.new)
         TriggerServerEvent("ars_tuning:payMods", cost, currentVehProperties.new)
+        cart = {}
         return
     end
 

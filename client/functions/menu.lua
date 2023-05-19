@@ -128,10 +128,7 @@ local function openModsMenu(veh, mod, maxMods)
         menu = parentMenu,
         title = modTitle,
         options = options,
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
     })
 
     lib.showContext('modsMenu' .. mod)
@@ -148,10 +145,7 @@ local function openTurboMenu()
         id = 'turboMenu',
         menu = mods.modTurbo.parent,
         title = mods.modTurbo.title,
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("turbo_enabled"),
@@ -238,10 +232,7 @@ local function openUpgradeMenu()
         id = 'upgradeMenu',
         title = locale("upgrade_category_title"),
         menu = "tuningMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("engine_title"),
@@ -432,10 +423,7 @@ local function openPearlescentMenu()
         id = 'pearlescentColor',
         title = locale("pearlescent_color_title"),
         menu = "colorMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = options
     })
 
@@ -551,10 +539,7 @@ local function openXenonMenu()
         menu = "cosmeticsMenu",
         onBack = function()
         end,
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = options
     })
 
@@ -571,10 +556,7 @@ local function openColorMenu()
         id = 'colorMenu',
         title = locale("color_title"),
         menu = "cosmeticsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("primary_color_title"),
@@ -741,10 +723,7 @@ local function bodyPartsMenu()
         onBack = function()
 
         end,
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("spoiler_title"),
@@ -937,10 +916,7 @@ local function windowTintMenu()
         id = 'windowTint',
         title = locale("window_tint_title"),
         menu = "cosmeticsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("tint_pure_black"),
@@ -1149,10 +1125,7 @@ local function platesColorMenu()
         id = 'platesColorMenu',
         title = locale("plate_color_title"),
         menu = "cosmeticsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("plate_blue_on_white1"),
@@ -1461,10 +1434,7 @@ local function wheelColors()
         id = 'wheelColorCategory',
         title = locale("wheel_color_title"),
         menu = "wheelsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = options
     })
     lib.showContext('wheelColorCategory')
@@ -1475,10 +1445,7 @@ local function openWheelsCategory()
         id = 'wheelsCategory',
         title = locale("wheel_type_title"),
         menu = "wheelsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("wheel_type_sport"),
@@ -1620,10 +1587,7 @@ local function openWheelsMenu()
         onBack = function()
 
         end,
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("wheel_color_title"),
@@ -1714,10 +1678,7 @@ local function openNeonMenu()
         id = 'neonMenu',
         title = locale("neon_title"),
         menu = "cosmeticsMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("disable_neon"),
@@ -1814,10 +1775,7 @@ local function openEstethicsMenu()
         id = 'cosmeticsMenu',
         title = locale("cosmetics_title"),
         menu = "tuningMenu",
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("color_title"),
@@ -2271,13 +2229,13 @@ end
 function openTuningMenu()
     lib.hideTextUI()
     lib.hideContext()
+
+    local vehicle = cache.vehicle
+
     lib.registerContext({
         id = 'tuningMenu',
         title = locale("tuning_menu_title"),
-        onExit = function()
-            lib.hideTextUI()
-            confirmPayment()
-        end,
+        onExit = onExit,
         options = {
             {
                 title = locale("cosmetics_title"),
@@ -2300,6 +2258,29 @@ function openTuningMenu()
         }
     })
 
+    -- Setting the player cam position
+    local vehPos = GetEntityCoords(vehicle)
+    local camPos = GetOffsetFromEntityInWorldCoords(vehicle, -2.0, 5.0, 3.0)
+    local headingToObject = GetHeadingFromVector_2d(vehPos.x - camPos.x, vehPos.y - camPos.y)
+
+    camMain = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', camPos.x, camPos.y, camPos.z, -35.0, 0.0,
+        headingToObject, GetGameplayCamFov(), false, 2)
+    camSec = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', camPos.x, camPos.y, camPos.z, -35.0, 0.0,
+        headingToObject, GetGameplayCamFov(), false, 2)
+
+    SetCamActive(camMain, true)
+    RenderScriptCams(true, true, 1000, true, true)
+
     lib.showContext('tuningMenu')
     showVehicleStats()
+end
+
+function onExit()
+    lib.hideTextUI()
+    confirmPayment()
+
+    RenderScriptCams(false, true, 1000, true, true)
+    DestroyCam(camMain, true)
+    DestroyCam(camSec, true)
+    ClearFocus()
 end
