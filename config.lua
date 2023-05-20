@@ -25,6 +25,4 @@ Config.WorkShops = {
     -- },
 }
 
-
-
 return Config

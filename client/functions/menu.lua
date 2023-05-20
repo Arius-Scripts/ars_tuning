@@ -34,7 +34,7 @@ local function openModsMenu(veh, mod, maxMods)
         Wait(1)
     end
 
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     for i = 1, maxMods, 1 do
         local modNativeLabel = GetLabelText(GetModTextLabel(vehicle, modNum, i))
@@ -138,7 +138,7 @@ end
 local function openTurboMenu()
     local vehicle = cache.vehicle
     local enabled = getVehicleProperties(vehicle).modTurbo
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
 
     lib.registerContext({
@@ -339,7 +339,7 @@ local function openPearlescentMenu()
     local options = {}
     local vehicle = cache.vehicle
     local colors = colors.pearlescent
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     for i = 1, #colors, 1 do
         table.insert(options,
@@ -435,7 +435,7 @@ local function openXenonMenu()
 
     local vehicle = cache.vehicle
     local colors = colors.xenon
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     for i = 1, #colors, 1 do
         local disabled = false
@@ -548,7 +548,7 @@ end
 
 local function openColorMenu()
     local vehicle = cache.vehicle
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
     local modPercentage = mods.color.price / 100
     local price = vehiclePrice * modPercentage
 
@@ -910,7 +910,7 @@ end
 
 local function windowTintMenu()
     local vehicle = cache.vehicle
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     lib.registerContext({
         id = 'windowTint',
@@ -1119,7 +1119,7 @@ end
 
 local function platesColorMenu()
     local vehicle = cache.vehicle
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     lib.registerContext({
         id = 'platesColorMenu',
@@ -1352,7 +1352,7 @@ local function wheelColors()
     local vehicle = cache.vehicle
     local colors = colors.pearlescent
 
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
     local modPercentage = mods.wheelsColor.price / 100
     local price = vehiclePrice * modPercentage
 
@@ -1576,7 +1576,7 @@ end
 local function openWheelsMenu()
     local vehicle = cache.vehicle
 
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
     local modPercentage = mods.wheelsColor.price / 100
     local price = vehiclePrice * modPercentage
 
@@ -1665,7 +1665,7 @@ end
 local function openNeonMenu()
     local vehicle = cache.vehicle
     local disabled = getVehicleProperties(vehicle).neonEnabled
-    local vehiclePrice = getVehiclePrice(vehicle)
+    local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     if not disabled[1] then disabled = true else disabled = false end
 
