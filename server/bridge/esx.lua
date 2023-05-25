@@ -7,7 +7,7 @@ local ESX = exports.es_extended:getSharedObject()
 lib.callback.register('ars_tuning:hasMoney', function(source, amount)
     local xPlayer = ESX.GetPlayerFromId(source)
 
-    local money = xPlayer.getAccountMoney("money").money
+    local money = xPlayer.getAccount("money").money
 
     return money >= amount
 end)
