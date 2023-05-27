@@ -37,7 +37,7 @@ local mods = {
     },
     modTurbo = {
         modNum = 18,
-        label = "Trubo",
+        label = "Turbo",
         parent = "upgradeMenu",
         title = "Turbo",
         price = 55.81
