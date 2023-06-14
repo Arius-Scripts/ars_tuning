@@ -37,8 +37,16 @@ for i = 1, #Config.WorkShops do
                 DrawMarker(0, self.coords.x, self.coords.y, self.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.8,
                     199, 208, 209, 100, false, true, 2, nil, nil, false)
                 if self.currentDistance < 1 and IsControlJustReleased(0, 38) then
+                    local vehicle = cache.vehicle
+                    currentVehProperties.old = getVehicleProperties(vehicle)
+
+                    local color1_r, color1_g, color1_b = GetVehicleCustomPrimaryColour(vehicle)
+                    currentVehProperties.old.color1 = { color1_r, color1_g, color1_b }
+
+                    local color2_r, color2_g, color2_b = GetVehicleCustomSecondaryColour(vehicle)
+                    currentVehProperties.old.color2 = { color2_r, color2_g, color2_b }
+
                     openTuningMenu()
-                    currentVehProperties.old = getVehicleProperties(cache.vehicle)
                 end
             end
         end

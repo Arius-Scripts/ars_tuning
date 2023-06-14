@@ -2,7 +2,7 @@ Config = {}
 
 Config.WorkShops = {
     {
-        job = "lsc", -- false if you dont want to use the job
+        job = "mechanic", -- false if you dont want to use the job
         pos = vector3(-211.4554, -1323.0739, 30.8904),
         blip = {
             enable = true,
