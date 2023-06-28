@@ -106,6 +106,10 @@
 	"wheel_type_tuner": "Tuner",
 	"wheel_type_bike": "Bike",
 	"wheel_type_highend": "Highend",
-
-	"no_money": "You dont have enough money"
+,
+	"no_money": "You dont have enough money",
+	"no_money_society": "Your company doesn't have enough money",
+	"society_payment_sucess": "%s $ removed from your company account",
+	"cash_payment_success": "%s $ removed from your wallet",
+	"bank_payment_success": "%s $ removed from your bank account"
 }
