@@ -34,9 +34,10 @@ local function openModsMenu(veh, mod, maxMods)
         Wait(1)
     end
 
-    local vehiclePrice = getVehiclePrice(vehicle) or 50000
+    local vehiclePrice = getVehiclePrice(vehicle) or 100
+    SetVehicleModKit(veh, 0)
 
-    for i = 1, maxMods, 1 do
+    for i = 0, maxMods, 1 do
         local modNativeLabel = GetLabelText(GetModTextLabel(vehicle, modNum, i))
 
         if modNativeLabel == "NULL" then
@@ -47,7 +48,7 @@ local function openModsMenu(veh, mod, maxMods)
 
         if currentMod == -1 then currentMod = maxMods end
 
-        if i == maxMods then
+        if i == 0 then
             menuTitle = locale("base_mod")
         else
             menuTitle = modLabel .. " " .. i
@@ -68,7 +69,7 @@ local function openModsMenu(veh, mod, maxMods)
                 if m == i then
                     modPercentage = modPrice[i] / 100
                     break
-                elseif i == maxMods then
+                elseif i == 0 then
                     modPercentage = modPrice[1] / 100
                     break
                 end
@@ -85,7 +86,7 @@ local function openModsMenu(veh, mod, maxMods)
                 icon = icon,
                 iconColor = getVehicleColor(),
                 disabled = disabled,
-                description = price .. "$",
+                description = price .. "€",
                 onSelect = function()
                     local properties = {}
                     properties[modType] = i
