@@ -1756,11 +1756,13 @@ local function openNeonMenu()
                     if not foundMatch then
                         table.insert(cart, newModData)
                     end
-                    currentVehProperties.new = getVehicleProperties(vehicle)
 
 
                     lib.setVehicleProperties(vehicle, { neonEnabled = { true, true, true, true } })
                     lib.setVehicleProperties(vehicle, { neonColor = { r, g, b } })
+
+                    currentVehProperties.new = getVehicleProperties(vehicle)
+
                     openNeonMenu()
                 end
             },
