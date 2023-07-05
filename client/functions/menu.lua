@@ -1640,10 +1640,11 @@ local function openWheelsMenu()
                     if not foundMatch then
                         table.insert(cart, newModData)
                     end
-                    currentVehProperties.new = getVehicleProperties(vehicle)
 
                     lib.setVehicleProperties(vehicle, { modSmokeEnabled = true })
                     lib.setVehicleProperties(vehicle, { tyreSmokeColor = { r, g, b } })
+
+                    currentVehProperties.new = getVehicleProperties(vehicle)
                     openWheelsMenu()
                 end
             },
