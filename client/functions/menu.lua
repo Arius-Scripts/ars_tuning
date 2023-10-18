@@ -34,10 +34,13 @@ local function openModsMenu(veh, mod, maxMods)
         Wait(1)
     end
 
-    local vehiclePrice = getVehiclePrice(vehicle) or 50000
+    local vehiclePrice = getVehiclePrice(vehicle) or 100
+    SetVehicleModKit(veh, 0)
 
-    for i = 1, maxMods, 1 do
-        local modNativeLabel = GetLabelText(GetModTextLabel(vehicle, modNum, i))
+    for i = 0, maxMods, 1 do
+        local modNumToSet = i - 1
+
+        local modNativeLabel = GetLabelText(GetModTextLabel(vehicle, modNum, modNumToSet))
 
         if modNativeLabel == "NULL" then
             modLabel = modLabel
@@ -45,9 +48,7 @@ local function openModsMenu(veh, mod, maxMods)
             modLabel = modNativeLabel
         end
 
-        if currentMod == -1 then currentMod = maxMods end
-
-        if i == maxMods then
+        if modNumToSet == -1 then
             menuTitle = locale("base_mod")
         else
             menuTitle = modLabel .. " " .. i
@@ -55,8 +56,7 @@ local function openModsMenu(veh, mod, maxMods)
 
         if modType == "modHorns" then menuTitle = getHornName(i) end
 
-
-        if i == currentMod then
+        if modNumToSet == currentMod or modNumToSet == maxMods then
             disabled = true
         else
             disabled = false
@@ -65,10 +65,10 @@ local function openModsMenu(veh, mod, maxMods)
         local modPercentage
         if type(modPrice) == "table" then
             for m = 1, #modPrice, 1 do
-                if m == i then
+                if i == m then
                     modPercentage = modPrice[i] / 100
                     break
-                elseif i == maxMods then
+                elseif modNumToSet == -1 then
                     modPercentage = modPrice[1] / 100
                     break
                 end
@@ -85,10 +85,10 @@ local function openModsMenu(veh, mod, maxMods)
                 icon = icon,
                 iconColor = getVehicleColor(),
                 disabled = disabled,
-                description = price .. "$",
+                description = price .. "€",
                 onSelect = function()
                     local properties = {}
-                    properties[modType] = i
+                    properties[modType] = modNumToSet
                     lib.setVehicleProperties(vehicle, properties)
                     playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
 
@@ -100,14 +100,14 @@ local function openModsMenu(veh, mod, maxMods)
                         modLabel = modLabel,
                         modType = modType,
                         modNum = modNum,
-                        modLevel = i,
+                        modLevel = modNumToSet,
                         modPrice = price,
                     }
 
                     local foundMatch = false
-                    for i, existingModData in ipairs(cart) do
+                    for l, existingModData in ipairs(cart) do
                         if existingModData.modType == modType then
-                            cart[i] = newModData
+                            cart[l] = newModData
                             foundMatch = true
                             break
                         end
@@ -1640,10 +1640,11 @@ local function openWheelsMenu()
                     if not foundMatch then
                         table.insert(cart, newModData)
                     end
-                    currentVehProperties.new = getVehicleProperties(vehicle)
 
                     lib.setVehicleProperties(vehicle, { modSmokeEnabled = true })
                     lib.setVehicleProperties(vehicle, { tyreSmokeColor = { r, g, b } })
+
+                    currentVehProperties.new = getVehicleProperties(vehicle)
                     openWheelsMenu()
                 end
             },
@@ -1756,11 +1757,13 @@ local function openNeonMenu()
                     if not foundMatch then
                         table.insert(cart, newModData)
                     end
-                    currentVehProperties.new = getVehicleProperties(vehicle)
 
 
                     lib.setVehicleProperties(vehicle, { neonEnabled = { true, true, true, true } })
                     lib.setVehicleProperties(vehicle, { neonColor = { r, g, b } })
+
+                    currentVehProperties.new = getVehicleProperties(vehicle)
+
                     openNeonMenu()
                 end
             },
