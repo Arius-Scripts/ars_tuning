@@ -36,7 +36,7 @@ for k, cfg in pairs(Config.WorkShops) do
         end,
         nearby = function(self)
             if cache.vehicle and hasAccess(cfg.job) then
-                DrawMarker(36, self.coords.x, self.coords.y, self.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.8,
+                DrawMarker(36, self.coords.x, self.coords.y, self.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, cfg.marker.scale.x, cfg.marker.scale.y, cfg.marker.scale.z,
                 cfg.marker.color.r, cfg.marker.color.b, cfg.marker.color.b, cfg.marker.color.alpha, false, true, 2, nil, nil, false)
                 if self.currentDistance < 3.0 and IsControlJustReleased(0, 38) then
                     local vehicle = cache.vehicle
