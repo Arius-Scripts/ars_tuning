@@ -32,12 +32,13 @@ server_scripts {
 
 shared_scripts {
     "@ox_lib/init.lua",
+    "locales/*.json",
 }
 
 files {
     "config.lua",
+    "locales/*.json",
     "client/vehicle/vehicles.lua",
     "client/vehicle/modList.lua",
-    "client/vehicle/colorList.lua",
-    "locales/*.json"
+    "client/vehicle/colorList.lua",    
 }

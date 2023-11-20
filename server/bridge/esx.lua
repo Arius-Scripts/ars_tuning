@@ -70,3 +70,22 @@ RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
             { json.encode(properties), properties.plate })
     end
 end)
+
+lib.callback.register('ars_tuning:retreiveEsxVehicles', function(source, amount)
+    local dbVehicles = MySQL.query.await("SELECT * FROM `vehicles`", { })
+
+    local formattedVehicleList = {}
+
+    if dbVehicles then
+        for k, veh in pairs(dbVehicles) do
+            print(veh.name, veh.model, veh.price, veh.category)
+            formattedVehicleList[veh.model] = {
+                name = veh.name,
+                price = veh.price,
+                category = veh.category,
+            }
+        end
+    end
+
+    return formattedVehicleList
+end)

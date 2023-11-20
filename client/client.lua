@@ -26,7 +26,7 @@ for i = 1, #Config.WorkShops do
         distance = 8,
         onEnter = function(self)
             if cache.vehicle and hasAccess(cfg.job) then
-                lib.showTextUI("[E] - open workshop")
+                lib.showTextUI("[E] - Accéder à l'atelier")
             end
         end,
         onExit = function(self)
