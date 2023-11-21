@@ -34,6 +34,9 @@ end)
 --- @param amount number
 RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
     local xPlayer = ESX.GetPlayerFromId(source)
+    if not amount then return end
+
+    amount = math.floor(amount)
 
     if SVConfig.EnableESXSocietyPayment == true then
         local job = xPlayer.job.name

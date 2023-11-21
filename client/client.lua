@@ -6,7 +6,6 @@ points.workshops = {}
 function CreateCustomLocations()
     ClearCustomLocations()
     for k, cfg in pairs(Config.WorkShops) do
-
         if cfg.blip.enable then
             local blip = AddBlipForCoord(cfg.pos)
     

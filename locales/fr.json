@@ -108,7 +108,7 @@
 	"wheel_type_highend": "Haut de gamme",
 	"no_money": "Vous n'avez pas assez d'argent",
 	"no_money_society": "Votre entreprise n'a pas assez d'argent",
-	"society_payment_sucess": "%s $ retirés de votre compte d'entreprise",
+	"society_payment_success": "%s $ retirés u compte de votre entreprise",
 	"cash_payment_success": "%s $ retirés de votre portefeuille",
 	"bank_payment_success": "%s $ retirés de votre compte bancaire"
 }
