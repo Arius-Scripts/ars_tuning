@@ -401,7 +401,7 @@ local function openPearlescentMenu()
                     menu = "pearlescentColor",
                     onExit = function()
                         lib.hideTextUI()
-                        confirmPayment()
+                        confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
                     end,
                     options = options
                 })
@@ -1403,7 +1403,7 @@ local function wheelColors()
                     menu = "wheelColorCategory",
                     onExit = function()
                         lib.hideTextUI()
-                        confirmPayment()
+                        confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
                     end,
                     options = options
                 })
@@ -2265,7 +2265,7 @@ end
 
 function onExit()
     lib.hideTextUI()
-    confirmPayment()
+    confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
 
     RenderScriptCams(false, true, 600, true, true)
     DestroyCam(cam, true)

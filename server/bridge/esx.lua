@@ -32,7 +32,7 @@ lib.callback.register('ars_tuning:hasMoney', function(source, amount)
 end)
 
 --- @param amount number
-RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
+RegisterNetEvent("ars_tuning:payMods", function(amount, properties, modListMsg)
     local xPlayer = ESX.GetPlayerFromId(source)
     if not amount then return end
 
@@ -41,10 +41,19 @@ RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
     if SVConfig.EnableESXSocietyPayment == true then
         local job = xPlayer.job.name
         local societyName = ("society_%s"):format(job)
+        
         TriggerEvent('esx_addonaccount:getSharedAccount', societyName, function(account)
             if account.money >= amount then
                 account.removeMoney(amount)
                 TriggerClientEvent('esx:showNotification', xPlayer.source, locale("society_payment_success", amount), "success", 6000)
+
+                local embedMsg = {
+                    color = SVConfig.Webhook.colors.orange,
+                    title = ("Custom Effectuée: **%s**"):format(xPlayer.job.label),
+                    
+                    description = ("Job name: **%s**\nEmployé: **%s**\nPlaque: **%s**\nModèle: **%s**\n\nDétails: \n%s"):format(job, xPlayer.name, properties.plate, joaat(properties.model), modListMsg),
+                }
+                TriggerEvent("lexinor_commons:SendEmbedWebhookLog", SVConfig.Webhook.list[job], embedMsg, SVConfig.Webhook.botname)
             else
                 TriggerClientEvent('esx:showNotification', xPlayer.source, locale("no_money_society"), "error", 6000)
                 return
