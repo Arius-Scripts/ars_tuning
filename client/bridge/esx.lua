@@ -12,3 +12,19 @@ function hasAccess(job)
 
     return false
 end
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() ~= resourceName then return end
+    if hasAccess(ESX.GetPlayerData().job.name) then
+        CreateCustomLocations()
+    end
+end)
+
+RegisterNetEvent('esx:setJob', function(job)
+    ESX.PlayerData.job = job
+	if hasAccess(job) then
+        CreateCustomLocations()
+    else
+        ClearCustomLocations()
+    end
+end)
