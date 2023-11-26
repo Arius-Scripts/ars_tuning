@@ -31,7 +31,7 @@ local function openModsMenu(veh, mod, maxMods)
 
             break
         end
-        Wait(1)
+        --Wait(1)
     end
 
     local vehiclePrice = getVehiclePrice(vehicle) or 100
@@ -78,49 +78,46 @@ local function openModsMenu(veh, mod, maxMods)
         end
 
         local price = vehiclePrice * modPercentage
+        options[#options+1] = {
+            title = menuTitle,
+            icon = icon,
+            iconColor = getVehicleColor(),
+            disabled = disabled,
+            description = price .. " $",
+            onSelect = function()
+                local properties = {}
+                properties[modType] = modNumToSet
+                lib.setVehicleProperties(vehicle, properties)
+                playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
 
-        table.insert(options,
-            {
-                title = menuTitle,
-                icon = icon,
-                iconColor = getVehicleColor(),
-                disabled = disabled,
-                description = price .. "€",
-                onSelect = function()
-                    local properties = {}
-                    properties[modType] = modNumToSet
-                    lib.setVehicleProperties(vehicle, properties)
-                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
+                local mods = getVehicleModCounts(vehicle, modNum)
 
-                    local mods = getVehicleModCounts(vehicle, modNum)
+                openModsMenu(vehicle, modNum, mods)
 
-                    openModsMenu(vehicle, modNum, mods)
+                local newModData = {
+                    modLabel = modLabel,
+                    modType = modType,
+                    modNum = modNum,
+                    modLevel = modNumToSet,
+                    modPrice = price,
+                }
 
-                    local newModData = {
-                        modLabel = modLabel,
-                        modType = modType,
-                        modNum = modNum,
-                        modLevel = modNumToSet,
-                        modPrice = price,
-                    }
-
-                    local foundMatch = false
-                    for l, existingModData in ipairs(cart) do
-                        if existingModData.modType == modType then
-                            cart[l] = newModData
-                            foundMatch = true
-                            break
-                        end
+                local foundMatch = false
+                for l, existingModData in ipairs(cart) do
+                    if existingModData.modType == modType then
+                        cart[l] = newModData
+                        foundMatch = true
+                        break
                     end
-
-                    if not foundMatch then
-                        table.insert(cart, newModData)
-                    end
-                    currentVehProperties.new = getVehicleProperties(vehicle)
                 end
-            }
-        )
-        Wait(1)
+
+                if not foundMatch then
+                    cart[#cart+1] = newModData
+                end
+                currentVehProperties.new = getVehicleProperties(vehicle)
+            end
+        }
+        --Wait(1)
     end
 
     lib.registerContext({
@@ -179,7 +176,7 @@ local function openTurboMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
                 end
@@ -216,7 +213,7 @@ local function openTurboMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
                 end
@@ -342,81 +339,76 @@ local function openPearlescentMenu()
     local vehiclePrice = getVehiclePrice(vehicle) or 50000
 
     for i = 1, #colors, 1 do
-        table.insert(options,
-            {
-                title = colors[i].category,
-                icon = 'paint-roller',
-                iconColor = colors[i].color,
-                onSelect = function()
-                    playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
-                    local options = {}
+        options[#options+1] = {
+            title = colors[i].category,
+            icon = 'paint-roller',
+            iconColor = colors[i].color,
+            onSelect = function()
+                playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
+                local options = {}
 
 
-                    local modPercentage = mods.color.price / 100
+                local modPercentage = mods.color.price / 100
 
-                    local price = vehiclePrice * modPercentage
+                local price = vehiclePrice * modPercentage
 
-                    for j = 1, #colors[i].colors do
-                        local disabled = false
+                for j = 1, #colors[i].colors do
+                    local disabled = false
 
-                        if getVehicleProperties(vehicle).pearlescentColor == colors[i].colors[j].index then
-                            disabled = true
+                    if getVehicleProperties(vehicle).pearlescentColor == colors[i].colors[j].index then
+                        disabled = true
+                    end
+                    options[#options+1] = {
+                        title = colors[i].colors[j].label,
+                        icon = mods.color.icon,
+                        iconColor = colors[i].colors[j].iconColor,
+                        disabled = disabled,
+                        description = price .. "$",
+                        onSelect = function()
+                            lib.setVehicleProperties(vehicle, { pearlescentColor = colors[i].colors[j].index })
+
+                            local newModData = {
+                                modLabel = " ",
+                                modType = "pearlescentColor",
+                                modLevel = colors[i].colors[j].label,
+                                modPrice = price,
+                            }
+
+                            local foundMatch = false
+                            for i, existingModData in ipairs(cart) do
+                                if existingModData.modType == "pearlescentColor" then
+                                    cart[i] = newModData
+                                    foundMatch = true
+                                    break
+                                end
+                            end
+
+                            if not foundMatch then
+                                cart[#cart+1] = newModData
+                            end
+                            currentVehProperties.new = getVehicleProperties(vehicle)
+
+                            openPearlescentMenu()
+                            playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
                         end
 
-                        table.insert(options,
-                            {
-                                title = colors[i].colors[j].label,
-                                icon = mods.color.icon,
-                                iconColor = colors[i].colors[j].iconColor,
-                                disabled = disabled,
-                                description = price .. "$",
-                                onSelect = function()
-                                    lib.setVehicleProperties(vehicle, { pearlescentColor = colors[i].colors[j].index })
+                    }
+                end
 
-                                    local newModData = {
-                                        modLabel = " ",
-                                        modType = "pearlescentColor",
-                                        modLevel = colors[i].colors[j].label,
-                                        modPrice = price,
-                                    }
+                lib.registerContext({
+                    id = colors[i].category,
+                    title = colors[i].category,
+                    menu = "pearlescentColor",
+                    onExit = function()
+                        lib.hideTextUI()
+                        confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
+                    end,
+                    options = options
+                })
 
-                                    local foundMatch = false
-                                    for i, existingModData in ipairs(cart) do
-                                        if existingModData.modType == "pearlescentColor" then
-                                            cart[i] = newModData
-                                            foundMatch = true
-                                            break
-                                        end
-                                    end
-
-                                    if not foundMatch then
-                                        table.insert(cart, newModData)
-                                    end
-                                    currentVehProperties.new = getVehicleProperties(vehicle)
-
-                                    openPearlescentMenu()
-                                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
-                                end
-
-                            }
-                        )
-                    end
-
-                    lib.registerContext({
-                        id = colors[i].category,
-                        title = colors[i].category,
-                        menu = "pearlescentColor",
-                        onExit = function()
-                            lib.hideTextUI()
-                            confirmPayment()
-                        end,
-                        options = options
-                    })
-
-                    lib.showContext(colors[i].category)
-                end,
-            }
-        )
+                lib.showContext(colors[i].category)
+            end,
+        }
     end
 
     lib.registerContext({
@@ -451,17 +443,53 @@ local function openXenonMenu()
         local modPercentage = mods.modXenon.price / 100
 
         local price = vehiclePrice * modPercentage
+        options[#options+1] = {
+            title = colors[i].label,
+            icon = 'lightbulb',
+            iconColor = colors[i].iconColor,
+            disabled = disabled,
+            description = price .. "$",
+            onSelect = function()
+                lib.setVehicleProperties(vehicle, { modXenon = true })
+                lib.setVehicleProperties(vehicle, { xenonColor = colors[i].index })
 
-        table.insert(options,
-            {
-                title = colors[i].label,
+                local newModData = {
+                    modLabel = locale("xenon_title"),
+                    modType = "modXenon",
+                    modLevel = colors[i].label,
+                    modPrice = price,
+                }
+
+                local foundMatch = false
+                for i, existingModData in ipairs(cart) do
+                    if existingModData.modType == "modXenon" then
+                        cart[i] = newModData
+                        foundMatch = true
+                        break
+                    end
+                end
+
+                if not foundMatch then
+                    cart[#cart+1] = newModData
+                end
+                currentVehProperties.new = getVehicleProperties(vehicle)
+
+                openXenonMenu()
+                playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
+            end,
+        }
+
+        if i == #colors then
+            options[#options+1] = {
+                title = locale("disable_xenon"),
                 icon = 'lightbulb',
-                iconColor = colors[i].iconColor,
-                disabled = disabled,
+                iconColor = "#fff",
                 description = price .. "$",
+                disabled = not getVehicleProperties(cache.vehicle).modXenon,
                 onSelect = function()
-                    lib.setVehicleProperties(vehicle, { modXenon = true })
-                    lib.setVehicleProperties(vehicle, { xenonColor = colors[i].index })
+                    lib.setVehicleProperties(vehicle, { modXenon = false })
+                    lib.setVehicleProperties(vehicle, { xenonColor = -1 })
+
 
                     local newModData = {
                         modLabel = locale("xenon_title"),
@@ -480,56 +508,15 @@ local function openXenonMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
+
 
                     openXenonMenu()
                     playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
                 end,
             }
-        )
-
-        if i == #colors then
-            table.insert(options,
-                {
-                    title = locale("disable_xenon"),
-                    icon = 'lightbulb',
-                    iconColor = "#fff",
-                    description = price .. "$",
-                    disabled = not getVehicleProperties(cache.vehicle).modXenon,
-                    onSelect = function()
-                        lib.setVehicleProperties(vehicle, { modXenon = false })
-                        lib.setVehicleProperties(vehicle, { xenonColor = -1 })
-
-
-                        local newModData = {
-                            modLabel = locale("xenon_title"),
-                            modType = "modXenon",
-                            modLevel = colors[i].label,
-                            modPrice = price,
-                        }
-
-                        local foundMatch = false
-                        for i, existingModData in ipairs(cart) do
-                            if existingModData.modType == "modXenon" then
-                                cart[i] = newModData
-                                foundMatch = true
-                                break
-                            end
-                        end
-
-                        if not foundMatch then
-                            table.insert(cart, newModData)
-                        end
-                        currentVehProperties.new = getVehicleProperties(vehicle)
-
-
-                        openXenonMenu()
-                        playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
-                    end,
-                }
-            )
         end
     end
 
@@ -621,7 +608,7 @@ local function openColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
 
                     currentVehProperties.new = getVehicleProperties(vehicle)
@@ -690,7 +677,7 @@ local function openColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
 
                     currentVehProperties.new = getVehicleProperties(vehicle)
@@ -948,7 +935,7 @@ local function windowTintMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -987,7 +974,7 @@ local function windowTintMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1027,7 +1014,7 @@ local function windowTintMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1065,7 +1052,7 @@ local function windowTintMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1103,7 +1090,7 @@ local function windowTintMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1160,7 +1147,7 @@ local function platesColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1203,7 +1190,7 @@ local function platesColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1246,7 +1233,7 @@ local function platesColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1289,7 +1276,7 @@ local function platesColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1332,7 +1319,7 @@ local function platesColorMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1357,77 +1344,73 @@ local function wheelColors()
     local price = vehiclePrice * modPercentage
 
     for i = 1, #colors, 1 do
-        table.insert(options,
-            {
-                title = colors[i].category,
-                icon = 'paint-roller',
-                iconColor = colors[i].color,
-                description = price .. "$",
-                onSelect = function()
-                    playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
-                    local options = {}
+        options[#options+1] = {
+            title = colors[i].category,
+            icon = 'paint-roller',
+            iconColor = colors[i].color,
+            description = price .. "$",
+            onSelect = function()
+                playSound('SELECT', 'HUD_FREEMODE_SOUNDSET')
+                local options = {}
 
-                    for j = 1, #colors[i].colors do
-                        local disabled = false
+                for j = 1, #colors[i].colors do
+                    local disabled = false
 
-                        if getVehicleProperties(vehicle).wheelColor == colors[i].colors[j].index then
-                            disabled = true
-                        end
-
-                        table.insert(options,
-                            {
-                                title = colors[i].colors[j].label,
-                                icon = 'droplet',
-                                iconColor = colors[i].colors[j].iconColor,
-                                disabled = disabled,
-                                onSelect = function()
-                                    lib.setVehicleProperties(vehicle, { wheelColor = colors[i].colors[j].index })
-
-
-                                    local newModData = {
-                                        modLabel = colors[i].colors[j].label,
-                                        modType = "wheelColor",
-                                        modLevel = " ",
-                                        modPrice = price,
-                                    }
-
-                                    local foundMatch = false
-                                    for i, existingModData in ipairs(cart) do
-                                        if existingModData.modType == "wheelColor" then
-                                            cart[i] = newModData
-                                            foundMatch = true
-                                            break
-                                        end
-                                    end
-
-                                    if not foundMatch then
-                                        table.insert(cart, newModData)
-                                    end
-                                    currentVehProperties.new = getVehicleProperties(vehicle)
-
-                                    playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
-                                    wheelColors()
-                                end
-
-                            }
-                        )
+                    if getVehicleProperties(vehicle).wheelColor == colors[i].colors[j].index then
+                        disabled = true
                     end
 
-                    lib.registerContext({
-                        id = colors[i].category,
-                        title = colors[i].category,
-                        menu = "wheelColorCategory",
-                        onExit = function()
-                            lib.hideTextUI()
-                            confirmPayment()
-                        end,
-                        options = options
-                    })
+                    options[#options+1] = {
+                        title = colors[i].colors[j].label,
+                        icon = 'droplet',
+                        iconColor = colors[i].colors[j].iconColor,
+                        disabled = disabled,
+                        onSelect = function()
+                            lib.setVehicleProperties(vehicle, { wheelColor = colors[i].colors[j].index })
 
-                    lib.showContext(colors[i].category)
-                end,
-            }
-        )
+
+                            local newModData = {
+                                modLabel = colors[i].colors[j].label,
+                                modType = "wheelColor",
+                                modLevel = " ",
+                                modPrice = price,
+                            }
+
+                            local foundMatch = false
+                            for i, existingModData in ipairs(cart) do
+                                if existingModData.modType == "wheelColor" then
+                                    cart[i] = newModData
+                                    foundMatch = true
+                                    break
+                                end
+                            end
+
+                            if not foundMatch then
+                                cart[#cart+1] = newModData
+                            end
+                            currentVehProperties.new = getVehicleProperties(vehicle)
+
+                            playSound('Zoom_In', 'DLC_HEIST_PLANNING_BOARD_SOUNDS')
+                            wheelColors()
+                        end
+
+                    }
+                end
+
+                lib.registerContext({
+                    id = colors[i].category,
+                    title = colors[i].category,
+                    menu = "wheelColorCategory",
+                    onExit = function()
+                        lib.hideTextUI()
+                        confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
+                    end,
+                    options = options
+                })
+
+                lib.showContext(colors[i].category)
+            end,
+        }
     end
 
     lib.registerContext({
@@ -1638,7 +1621,7 @@ local function openWheelsMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
 
                     lib.setVehicleProperties(vehicle, { modSmokeEnabled = true })
@@ -1706,7 +1689,7 @@ local function openNeonMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
                     currentVehProperties.new = getVehicleProperties(vehicle)
 
@@ -1755,7 +1738,7 @@ local function openNeonMenu()
                     end
 
                     if not foundMatch then
-                        table.insert(cart, newModData)
+                        cart[#cart+1] = newModData
                     end
 
 
@@ -2282,7 +2265,7 @@ end
 
 function onExit()
     lib.hideTextUI()
-    confirmPayment()
+    confirmPayment(GetVehicleNumberPlateText(cache.vehicle))
 
     RenderScriptCams(false, true, 600, true, true)
     DestroyCam(cam, true)

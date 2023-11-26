@@ -36,8 +36,8 @@ shared_scripts {
 
 files {
     "config.lua",
+    "locales/*.json",
     "client/vehicle/vehicles.lua",
     "client/vehicle/modList.lua",
-    "client/vehicle/colorList.lua",
-    "locales/*.json"
+    "client/vehicle/colorList.lua",    
 }

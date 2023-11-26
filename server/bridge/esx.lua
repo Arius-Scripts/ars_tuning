@@ -1,3 +1,4 @@
+lib.locale()
 local esx = GetResourceState('es_extended'):find('start')
 if not esx then return end
 
@@ -7,17 +8,71 @@ local ESX = exports.es_extended:getSharedObject()
 lib.callback.register('ars_tuning:hasMoney', function(source, amount)
     local xPlayer = ESX.GetPlayerFromId(source)
 
-    local money = xPlayer.getAccount("money").money
+    if not xPlayer then return end
+    local hasMoney = false
+    if SVConfig.EnableESXSocietyPayment == true then
+        local job = xPlayer.job.name
+        local societyName = ("society_%s"):format(job)
+        TriggerEvent('esx_addonaccount:getSharedAccount', societyName, function(account)
+            if account.money >= amount then
+                hasMoney = true
+            end
+        end)
+    else
+        local cash = xPlayer.getAccount("money")
+        local bank = xPlayer.getAccount("bank")
+        if cash.money >= amount then
+            hasMoney = true
+        elseif bank >= amount then
+            hasMoney = true
+        end
+    end
 
-    return money >= amount
+    return hasMoney
 end)
 
 --- @param amount number
-RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
+RegisterNetEvent("ars_tuning:payMods", function(amount, properties, modListMsg)
     local xPlayer = ESX.GetPlayerFromId(source)
+    if not amount then return end
 
-    xPlayer.removeAccountMoney("money", amount)
+    amount = math.floor(amount)
 
+    if SVConfig.EnableESXSocietyPayment == true then
+        local job = xPlayer.job.name
+        local societyName = ("society_%s"):format(job)
+        
+        TriggerEvent('esx_addonaccount:getSharedAccount', societyName, function(account)
+            if account.money >= amount then
+                account.removeMoney(amount)
+                TriggerClientEvent('esx:showNotification', xPlayer.source, locale("society_payment_success", amount), "success", 6000)
+
+                local embedMsg = {
+                    color = SVConfig.Webhook.colors.orange,
+                    title = ("Custom Effectuée: **%s**"):format(xPlayer.job.label),
+                    
+                    description = ("Job name: **%s**\nEmployé: **%s**\nPlaque: **%s**\nModèle: **%s**\n\nDétails: \n%s"):format(job, xPlayer.name, properties.plate, joaat(properties.model), modListMsg),
+                }
+                TriggerEvent("lexinor_commons:SendEmbedWebhookLog", SVConfig.Webhook.list[job], embedMsg, SVConfig.Webhook.botname)
+            else
+                TriggerClientEvent('esx:showNotification', xPlayer.source, locale("no_money_society"), "error", 6000)
+                return
+            end
+        end)
+    else
+        local cash = xPlayer.getAccount("money")
+        local bank = xPlayer.getAccount("bank")
+        if cash.money >= amount then
+            xPlayer.removeAccountMoney("money", amount)
+            TriggerClientEvent('esx:showNotification', xPlayer.source, locale("cash_payment_success", amount), "success", 6000)
+        elseif bank >= amount then
+            xPlayer.removeAccountMoney("bank", amount)
+            TriggerClientEvent('esx:showNotification', xPlayer.source, locale("bank_payment_success", amount), "success", 6000)
+        else
+            TriggerClientEvent('esx:showNotification', xPlayer.source, locale("no_money", amount), "error", 6000)
+            return
+        end
+    end
 
     local properties = properties
     local isVehicleOwned = MySQL.prepare.await('SELECT plate FROM owned_vehicles WHERE plate = ?', { properties.plate })
@@ -26,4 +81,22 @@ RegisterNetEvent("ars_tuning:payMods", function(amount, properties)
         MySQL.update('UPDATE owned_vehicles SET vehicle = ? WHERE plate = ?',
             { json.encode(properties), properties.plate })
     end
+end)
+
+lib.callback.register('ars_tuning:retreiveEsxVehicles', function(source, amount)
+    local dbVehicles = MySQL.query.await("SELECT * FROM `vehicles`", { })
+
+    local formattedVehicleList = {}
+
+    if dbVehicles then
+        for k, veh in pairs(dbVehicles) do
+            formattedVehicleList[veh.model] = {
+                name = veh.name,
+                price = veh.price,
+                category = veh.category,
+            }
+        end
+    end
+
+    return formattedVehicleList
 end)

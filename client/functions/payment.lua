@@ -1,19 +1,21 @@
 lib.locale()
 
-function confirmPayment()
+function confirmPayment(vehiclePlate)
     if not cart[1] then return end
 
     local cost = 0
     local modListMsg = ""
-
+    modListMsg = ("------ **%s** ------\n"):format(vehiclePlate)
     for k, v in ipairs(cart) do
         local modPrice = tonumber(v.modPrice)
         cost = cost + modPrice
-        modListMsg = modListMsg .. "- " .. v.modLabel .. " " .. v.modLevel .. " **" .. modPrice .. "$**  \n"
+        modListMsg = ("- %s  %s **%s** $\n"):format(v.modLabel, v.modLevel, modPrice)
     end
 
+    modListMsg = ("%s\n Total: **%s** $"):format(modListMsg, cost)
+
     local confirmation = lib.alertDialog({
-        header = 'Payment confirmation',
+        header = locale("confirm_payment_dialog_title"),
         content = modListMsg,
         centered = false,
         cancel = true
@@ -32,7 +34,7 @@ function confirmPayment()
         end
 
         lib.setVehicleProperties(cache.vehicle, currentVehProperties.new)
-        TriggerServerEvent("ars_tuning:payMods", cost, currentVehProperties.new)
+        TriggerServerEvent("ars_tuning:payMods", cost, currentVehProperties.new, modListMsg)
         cart = {}
         return
     end

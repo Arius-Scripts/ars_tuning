@@ -59,10 +59,10 @@ function showVehicleStats()
 	local breaks = GetVehicleModelMaxBraking(vehicleModel) or 0.0
 	local power = (acceleration + maxSpeed) / 2
 
-	local messageToShow = 'ㅤㅤㅤㅤㅤ**STATISTICS**ㅤㅤㅤㅤㅤ  \n Power: ' ..
+	local messageToShow = 'ㅤㅤㅤㅤㅤ**STATISTICS**ㅤㅤㅤㅤㅤ  \n Puissance: ' ..
 		math.round(power) ..
 		"  \n Acceleration: " ..
-		math.round(acceleration) .. "  \n Max Speed: " .. math.round(maxSpeed) .. "  \n Breaks: " .. math.round(breaks)
+		math.round(acceleration) .. "  \n Vitesse Max.: " .. math.round(maxSpeed) .. "  \n Freins: " .. math.round(breaks)
 
 	lib.showTextUI(messageToShow, {
 		position = "right-center",
@@ -83,7 +83,7 @@ function getVehiclePrice(vehicle)
 			ownedPrice = v.price
 			break
 		end
-		Wait(1)
+		--Wait(1)
 	end
 
 	return tonumber(ownedPrice)
@@ -196,5 +196,17 @@ function getHornName(index)
 		return "Festive 3"
 	else
 		return "N/A"
+	end
+end
+
+
+function SetCamLookAtBodyPart(cam, type)
+	if not cam or not type then return end
+
+	if type == "front" then
+	elseif type == "lside" then
+	elseif type == "rside" then
+	elseif type == "back" then
+		
 	end
 end
